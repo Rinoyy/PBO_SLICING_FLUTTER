@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main_home.dart';
+import 'home.dart';
 import 'add.dart';
 
 class tables extends StatelessWidget {
@@ -44,7 +44,7 @@ class tables extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) =>  add()));
+                    context, MaterialPageRoute(builder: (context) =>  AddScreen()));
               },
               child: const Text('Add Data +'),
               style: ElevatedButton.styleFrom(

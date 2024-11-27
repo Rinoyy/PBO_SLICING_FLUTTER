@@ -1,158 +1,121 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'main_home.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class add extends StatefulWidget {
-  add({super.key});
-  String? language;
+final supabase = Supabase.instance.client;
+
+class AddScreen extends StatefulWidget {
+  const AddScreen({super.key});
 
   @override
-  _AddState createState() => _AddState();
+  State<AddScreen> createState() => _AddScreenState();
 }
 
-class _AddState extends State<add> {
-  String? language;
+class _AddScreenState extends State<AddScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+
+  Future<List<dynamic>> fetchData() async {
+    final response = await supabase.from('food').select('*');
+    return response as List<dynamic>;
+  }
+
+  Future<void> deleteData(int id) async {
+    await supabase.from('food').delete().eq('id', id);
+    setState(() {}); // Refresh data setelah penghapusan
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                  width: 40,
-                  height: 40,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(100)),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => MainHome()));
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(padding: EdgeInsets.all(0)),
-                    child: const Icon(
-                      Icons.chevron_left,
-                      size: 40,
-                    ),
-                  )),
-              Container(
-                  width: 40,
-                  height: 40,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(100)),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MainHome()));
-                    },
-                    style: ElevatedButton.styleFrom(padding: EdgeInsets.all(0)),
-                    child: const Icon(
-                      Icons.account_circle,
-                      size: 40,
-                    ),
-                  ))
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Text(
-                  "Nama Produk",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                const TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Masukan nama produk',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  "Harga Produk",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                const TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Masukan harga produk',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  "Kategori penduduk",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  // margin: EdgeInsets.all(30),
-                  child: DropdownButton(
-                    isExpanded: true,
-                    items: const <DropdownMenuItem<String>>[
-                      DropdownMenuItem<String>(
-                        value: 'Mie',
-                        child: Text('Mie'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'Sop',
-                        child: Text('Sop'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'kacang',
-                        child: Text('kacang'),
-                      ),
-                    ],
-                    value: language,
-                    hint: const Text('Select Language'),
-                    onChanged: (String? value) {
-                      setState(() {
-                        language = value;
-                      });
-                    },
-                  ),
-                ),
-                const Text(
-                  "Harga Produk",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                const TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Masukan harga produk',
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    width: 200,
-                    margin: EdgeInsets.only(top: 20),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => add()));
-                      },
-                      child: const Text('Submit'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Belajar Flutter"),
+        backgroundColor: Colors.blue,
+      ),
+      body: Form(
+        child: Column(
+          children: [
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(labelText: "Name"),
             ),
-          ),
+            TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(labelText: "Description"),
+            ),
+            TextField(
+              controller: _priceController,
+              decoration: const InputDecoration(labelText: "Price"),
+            ),
+            TextField(
+              controller: _quantityController,
+              decoration: const InputDecoration(labelText: "Quantity"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final name = _nameController.text;
+                final description = _descriptionController.text;
+                final price = int.tryParse(_priceController.text) ?? 0;
+                final quantity = int.tryParse(_quantityController.text) ?? 0;
+
+                await supabase.from('food').insert({
+                  'name': name,
+                  'description': description,
+                  'price': price,
+                  'quantity': quantity,
+                });
+
+                setState(() {
+                  _nameController.clear();
+                  _descriptionController.clear();
+                  _priceController.clear();
+                  _quantityController.clear();
+                });
+              },
+              child: const Text("Submit"),
+            ),
+            FutureBuilder(
+              future: fetchData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text("No data found");
+                } else {
+                  final List<dynamic> data = snapshot.data!;
+
+                  return DataTable(
+                    columns: const [
+                      DataColumn(label: Text('Name')),
+                      DataColumn(label: Text('Description')),
+                      DataColumn(label: Text('Price')),
+                      DataColumn(label: Text('Quantity')),
+                      DataColumn(label: Text('Actions')),
+                    ],
+                    rows: data.map<DataRow>((item) {
+                      return DataRow(cells: [
+                        DataCell(Text(item['name'] ?? '')),
+                        DataCell(Text(item['description'] ?? '')),
+                        DataCell(Text(item['price'].toString())),
+                        DataCell(Text(item['quantity'].toString())),
+                        DataCell(
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () async {
+                              await deleteData(item['id']);
+                            },
+                          ),
+                        ),
+                      ]);
+                    }).toList(),
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

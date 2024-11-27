@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'cart.dart';
 import 'table.dart';
-import 'main_home.dart';
+import 'home.dart';
 import 'add.dart';
 
-void main() {
+const supabaseUrl = 'https://ybvbysarszyfrzxdjklx.supabase.co';
+const supabaseKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlidmJ5c2Fyc3p5ZnJ6eGRqa2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE5OTg0MjksImV4cCI6MjA0NzU3NDQyOX0.eHSg9qpOGmAT9kSdeFZC4xn6ROhA0Hmt4LGdw50edrA';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inisialisasi Supabase
+  await Supabase.initialize(
+    url: supabaseUrl,
+    anonKey: supabaseKey,
+  );
+
   runApp(const MainApp());
 }
 
@@ -27,7 +40,7 @@ class _MyAppState extends State<MainApp> {
       MainHome(),
       cart(),
       tables(updateIndex: updateIndex),
-      add(),
+      AddScreen(), // Ganti `MyApp` dengan `AddScreen`
     ];
   }
 
