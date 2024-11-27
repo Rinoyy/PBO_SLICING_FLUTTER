@@ -12,17 +12,17 @@ class AddScreen extends StatefulWidget {
 
 class _AddScreenState extends State<AddScreen> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  // final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _quantityController = TextEditingController();
+  // final TextEditingController _quantityController = TextEditingController();
 
   Future<List<dynamic>> fetchData() async {
-    final response = await supabase.from('food').select('*');
+    final response = await supabase.from('Food').select('*');
     return response as List<dynamic>;
   }
 
   Future<void> deleteData(int id) async {
-    await supabase.from('food').delete().eq('id', id);
+    await supabase.from('Food').delete().eq('id', id);
     setState(() {}); // Refresh data setelah penghapusan
   }
 
@@ -41,36 +41,28 @@ class _AddScreenState extends State<AddScreen> {
               decoration: const InputDecoration(labelText: "Name"),
             ),
             TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: "Description"),
-            ),
-            TextField(
               controller: _priceController,
               decoration: const InputDecoration(labelText: "Price"),
-            ),
-            TextField(
-              controller: _quantityController,
-              decoration: const InputDecoration(labelText: "Quantity"),
             ),
             ElevatedButton(
               onPressed: () async {
                 final name = _nameController.text;
-                final description = _descriptionController.text;
+                // final description = _descriptionController.text;
                 final price = int.tryParse(_priceController.text) ?? 0;
-                final quantity = int.tryParse(_quantityController.text) ?? 0;
+                // final quantity = int.tryParse(_quantityController.text) ?? 0;
 
-                await supabase.from('food').insert({
+                await supabase.from('Food').insert({
                   'name': name,
-                  'description': description,
+                  // 'description': description,
                   'price': price,
-                  'quantity': quantity,
+                  // 'quantity': quantity,
                 });
 
                 setState(() {
                   _nameController.clear();
-                  _descriptionController.clear();
+                  // _descriptionController.clear();
                   _priceController.clear();
-                  _quantityController.clear();
+                  // _quantityController.clear();
                 });
               },
               child: const Text("Submit"),
@@ -90,17 +82,17 @@ class _AddScreenState extends State<AddScreen> {
                   return DataTable(
                     columns: const [
                       DataColumn(label: Text('Name')),
-                      DataColumn(label: Text('Description')),
+                      // DataColumn(label: Text('Description')),
                       DataColumn(label: Text('Price')),
-                      DataColumn(label: Text('Quantity')),
+                      // DataColumn(label: Text('Quantity')),
                       DataColumn(label: Text('Actions')),
                     ],
                     rows: data.map<DataRow>((item) {
                       return DataRow(cells: [
                         DataCell(Text(item['name'] ?? '')),
-                        DataCell(Text(item['description'] ?? '')),
+                        // DataCell(Text(item['description'] ?? '')),
                         DataCell(Text(item['price'].toString())),
-                        DataCell(Text(item['quantity'].toString())),
+                        // DataCell(Text(item['quantity'].toString())),
                         DataCell(
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),

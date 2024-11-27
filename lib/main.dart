@@ -5,9 +5,9 @@ import 'table.dart';
 import 'home.dart';
 import 'add.dart';
 
-const supabaseUrl = 'https://ybvbysarszyfrzxdjklx.supabase.co';
+const supabaseUrl = 'https://epopsemnhgkifhyroxcx.supabase.co';
 const supabaseKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlidmJ5c2Fyc3p5ZnJ6eGRqa2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE5OTg0MjksImV4cCI6MjA0NzU3NDQyOX0.eHSg9qpOGmAT9kSdeFZC4xn6ROhA0Hmt4LGdw50edrA';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwb3BzZW1uaGdraWZoeXJveGN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2ODM5NDMsImV4cCI6MjA0ODI1OTk0M30.23moln--71tbeVzaeoelN7hkJWOwzeePJTL9ayNR4Lo';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
