@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'home.dart';
 import 'cart.dart';
 import 'table.dart';
-import 'home.dart';
 import 'add.dart';
 
 const supabaseUrl = 'https://epopsemnhgkifhyroxcx.supabase.co';
@@ -18,36 +18,82 @@ void main() async {
     anonKey: supabaseKey,
   );
 
-  runApp(const MainApp());
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainApp()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Image.asset(
+          'assets/Burger.jpg', // Ganti dengan gambar splash kamu
+          width: 200,
+          height: 200,
+        ),
+      ),
+    );
+  }
 }
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _MainAppState createState() => _MainAppState();
 }
 
-class _MyAppState extends State<MainApp> {
+class _MainAppState extends State<MainApp> {
   int _selectedIndex = 0;
 
-  late List<Widget> _children;
-
-  @override
-  void initState() {
-    super.initState();
-    _children = [
-      MainHome(),
-      cart(),
-      tables(updateIndex: updateIndex),
-      AddScreen(), // Ganti `MyApp` dengan `AddScreen`
-    ];
-  }
+  late List<Widget> _pages;
 
   void updateIndex(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      const MainHome(),
+      const cart(),
+      Tables(updateIndex: updateIndex),
+      const AddScreen(),
+    ];
   }
 
   void _onItemTapped(int index) {
@@ -58,32 +104,29 @@ class _MyAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 50),
-          child: _children[_selectedIndex],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Isi',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: 'Table',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          onTap: _onItemTapped,
-        ),
+    return Scaffold(
+      appBar: AppBar(),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.table_chart),
+            label: 'Table',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
