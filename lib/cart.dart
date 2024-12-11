@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:startin/main.dart';
+import 'home.dart';
 
 class cart extends StatelessWidget {
   const cart({super.key});
@@ -11,20 +13,30 @@ class cart extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4)
+          children: [ 
+            GestureDetector(
+             onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainApp()),
+                  );
+                },
+
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                 boxShadow: [
+                  BoxShadow(
+                      color: Colors.white.withOpacity(0.1), blurRadius: 4),
                 ],
               ),
-              child: const Icon(
-                Icons.chevron_left,
-                size: 40,
-                color: Colors.red,
+                child: const Icon(
+                  Icons.chevron_left,
+                  size: 40,
+                  color: Colors.black,
+                ),
               ),
             ),
             const Text(
@@ -46,46 +58,7 @@ class cart extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            "assets/Burger.jpg",
-                            width: 120,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Burger King Medium",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Icon(Icons.delete,
-                                   color: Colors.red,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Rp. 500000",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    
                     const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,30 +70,48 @@ class cart extends StatelessWidget {
                             width: 120,
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        const Expanded(
+                        SizedBox(width: 10),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                            const  Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Burger King Medium",
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Icon(Icons.delete,
-                                    color: Colors.red,
-                                  ),
+                                  Icon(Icons.delete, color: Colors.red),
                                 ],
                               ),
-                              SizedBox(height: 8),
+                            const  SizedBox(height: 8),
                               Text(
                                 "Rp. 500000",
                                 style: TextStyle(fontSize: 16),
+                              ),
+                            const  SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  IconButton( icon: Icon(Icons.remove),
+                                    onPressed: () {
+                                      // Decrease quantity logic here
+                                    },
+                                  ),
+                                  const Text(
+                                    "1", // Replace with the dynamic quantity
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.add),
+                                    onPressed: () {
+                                      // Increase quantity logic here
+                                    },
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -128,7 +119,7 @@ class cart extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Row(
+                 Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipRRect(
@@ -138,30 +129,48 @@ class cart extends StatelessWidget {
                             width: 120,
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        const Expanded(
+                        SizedBox(width: 10),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                            const  Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Burger King Medium",
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Icon(Icons.delete,
-                                  color: Colors.red,
-                                  ),
+                                  Icon(Icons.delete, color: Colors.red),
                                 ],
                               ),
-                              SizedBox(height: 8),
+                            const  SizedBox(height: 8),
                               Text(
                                 "Rp. 500000",
                                 style: TextStyle(fontSize: 16),
+                              ),
+                            const  SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  IconButton( icon: Icon(Icons.remove),
+                                    onPressed: () {
+                                      // Decrease quantity logic here
+                                    },
+                                  ),
+                                  const Text(
+                                    "1", // Replace with the dynamic quantity
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.add),
+                                    onPressed: () {
+                                      // Increase quantity logic here
+                                    },
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -169,7 +178,7 @@ class cart extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Row(
+                  Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipRRect(
@@ -179,110 +188,48 @@ class cart extends StatelessWidget {
                             width: 120,
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        const Expanded(
+                        SizedBox(width: 10),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                            const  Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Burger King Medium",
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Icon(Icons.delete,
-                                  color: Colors.red,
-                                  ),
+                                  Icon(Icons.delete, color: Colors.red),
                                 ],
                               ),
-                              SizedBox(height: 8),
+                            const  SizedBox(height: 8),
                               Text(
                                 "Rp. 500000",
                                 style: TextStyle(fontSize: 16),
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            "assets/Burger.jpg",
-                            width: 120,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            const  SizedBox(height: 8),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Burger King Medium",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                  IconButton( icon: Icon(Icons.remove),
+                                    onPressed: () {
+                                      // Decrease quantity logic here
+                                    },
                                   ),
-                                  Icon(Icons.delete,
-                                  color: Colors.red,),
-                                ],
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Rp. 500000",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            "assets/Burger.jpg",
-                            width: 120,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Burger King Medium",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                  const Text(
+                                    "1", // Replace with the dynamic quantity
+                                    style: TextStyle(fontSize: 16),
                                   ),
-                                  Icon(Icons.delete,
-                                  color: Colors.red,),
+                                  IconButton(
+                                    icon: Icon(Icons.add),
+                                    onPressed: () {
+                                      // Increase quantity logic here
+                                    },
+                                  ),
                                 ],
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Rp. 500000",
-                                style: TextStyle(fontSize: 16),
                               ),
                             ],
                           ),
@@ -308,7 +255,7 @@ class cart extends StatelessWidget {
                       )
                     ],
                   ),
-                  Container(
+                 Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -363,7 +310,8 @@ class cart extends StatelessWidget {
                       child: const Text("kirim"),
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: Colors.blue,),
+                        backgroundColor: Colors.blue,
+                      ),
                     ),
                   )
                 ],

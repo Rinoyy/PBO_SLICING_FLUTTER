@@ -1,10 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'add.dart';
 
-class Tables extends StatelessWidget {
+class Tables extends StatefulWidget {
   final Function(int) updateIndex;
 
   const Tables({Key? key, required this.updateIndex}) : super(key: key);
+
+  @override
+  _TablesState createState() => _TablesState();
+}
+
+class _TablesState extends State<Tables> {
+  List<Map<String, dynamic>> foodData = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFoodData();
+  }
+
+  Future<void> deleteFoodData(String name) async {
+    try {
+      final response = await Supabase.instance.client
+          .from('Food')
+          .delete()
+          .eq('name', name);
+
+      if (response.error == null) {
+        fetchFoodData();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$name berhasil dihapus')),
+        );
+      } else {
+        throw Exception(response.error!.message);
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error menghapus data')),
+      );
+    }
+  }
+
+  Future<void> fetchFoodData() async {
+    try {
+      final response = await Supabase.instance.client
+          .from('Food')
+          .select('id, name,  price, category');
+
+      if (response != null && response is List<dynamic>) {
+        setState(() {
+          foodData = response.map((item) {
+            return {
+              'id': item['id'],
+              'name': item['name'] ?? 'Unknown',
+              'price': item['price']?.toString() ?? '0',
+              'category': item['category'] ?? 'Uncategorized',
+            };
+          }).toList();
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Error fetching data: Response format invalid');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching data: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +95,7 @@ class Tables extends StatelessWidget {
               ),
               child: ElevatedButton(
                 onPressed: () {
-                  updateIndex(0);
+                  widget.updateIndex(0);
                 },
                 style: ElevatedButton.styleFrom(padding: EdgeInsets.all(0)),
                 child: const Icon(
@@ -39,71 +107,65 @@ class Tables extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              SizedBox(
-                width: screenWidth * 0.5,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddScreen()),
-                    );
-                  },
-                  child: const Text('Add Data +'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              // Tabel yang responsif
-              SizedBox(
-                height:
-                    MediaQuery.of(context).size.height - 200, // Batasi tinggi
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: DataTable(
-                    columnSpacing: 40,
-                    headingRowHeight: 40,
-                    columns: [
-                      DataColumn(label: Text('Foto')),
-                      DataColumn(label: Text('Nama Produk')),
-                      DataColumn(label: Text('Harga')),
-                      DataColumn(label: Text('Aksi')),
-                    ],
-                    rows: [
-                      _buildDataRow(
-                        image: 'assets/Burger.jpg',
-                        productName: 'Burger King ',
-                        price: 'Rp.50.000,00',
-                        screenWidth: screenWidth,
+      body: Center(
+        child: isLoading
+            ? const CircularProgressIndicator()
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: screenWidth * 0.5,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddScreen()),
+                            );
+                          },
+                          child: const Text('Add Data +'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
                       ),
-                      _buildDataRow(
-                        image: 'assets/Burger.jpg',
-                        productName: 'Teh Botol',
-                        price: 'Rp.4.000,00',
-                        screenWidth: screenWidth,
-                      ),
-                      _buildDataRow(
-                        image: 'assets/Burger.jpg',
-                        productName: 'Burger King Small',
-                        price: 'Rp.35.000,00',
-                        screenWidth: screenWidth,
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: DataTable(
+                            columnSpacing: 40,
+                            headingRowHeight: 40,
+                            columns: const [
+                              DataColumn(label: Text('Foto')),
+                              DataColumn(label: Text('Nama Produk')),
+                              DataColumn(label: Text('Category')),
+                              DataColumn(label: Text('Harga')),
+                              DataColumn(label: Text('Aksi')),
+                            ],
+                            rows: foodData.map((data) {
+                              return _buildDataRow(
+                                image: 'assets/Burger.jpg',
+                                productName: data['name'] ?? 'Unknown',
+                                category: data['category'] ?? 'Unknown',
+                                price: data['price'] ?? 'Unknown',
+                                screenWidth: screenWidth,
+                              );
+                            }).toList(),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -111,6 +173,7 @@ class Tables extends StatelessWidget {
   DataRow _buildDataRow({
     required String image,
     required String productName,
+    required String category,
     required String price,
     required double screenWidth,
   }) {
@@ -130,23 +193,39 @@ class Tables extends StatelessWidget {
             ),
           ),
         ),
-        DataCell(Padding(
-          padding: const EdgeInsets.all(3.0),
-          child: Text(productName),
-        )),
-        DataCell(Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(price),
-        )),
+        DataCell(Text(productName)),
+        DataCell(Text(category)),
+        DataCell(Text(price)),
         DataCell(
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                // Fungsi hapus
-              },
-            ),
+          IconButton(
+            icon: const Icon(Icons.delete, color: Colors.red),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Hapus $productName?'),
+                    content:
+                        const Text('Apakah Anda yakin ingin menghapus item ini?'),
+                    actions: [
+                      TextButton(
+                        child: const Text('Batal'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('Hapus'),
+                        onPressed: () {
+                          deleteFoodData(productName);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ),
       ],

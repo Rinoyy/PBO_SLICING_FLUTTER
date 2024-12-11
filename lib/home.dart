@@ -1,7 +1,23 @@
 // import 'dart:ui';
 // import 'package:flutter/cupertino.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'package:flutter/material.dart';
 import 'main.dart';
+
+Future<List<Map<String, dynamic>>> fetchFood() async {
+  final response = await Supabase.instance.client
+      .from('Food')
+      .select('name, price'); // Tidak perlu .execute()
+
+  // Validasi jika respons tidak memiliki data
+  if (response == null || (response as List).isEmpty) {
+    throw Exception('No data found in table "food".');
+  }
+
+  // Kembalikan data sebagai List<Map<String, dynamic>>
+  return List<Map<String, dynamic>>.from(response as List);
+}
 
 void main() {
   runApp(const MainHome());
@@ -206,451 +222,116 @@ class _MyAppState extends State<MainHome> {
               ),
             ),
             Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 20, left: 65),
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'ALL FOOD',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  width: 150,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            'assets/Burger.jpg',
-                                            width: 130,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text("Burger King Medium"),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              child: const Text("Rp.50.000"),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 2),
-                                              child: Container(
-                                                padding: const EdgeInsets.all(
-                                                    1.0), // Padding untuk lingkaran
-                                                decoration: BoxDecoration(
-                                                  color: Colors
-                                                      .green, // Warna lingkaran
-                                                  shape: BoxShape
-                                                      .circle, // Bentuk lingkaran
-                                                ),
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color: Colors
-                                                      .white, // Warna ikon
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 150,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            'assets/Burger.jpg',
-                                            width: 130,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text("Burger King Medium"),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              child: const Text("Rp.50.000"),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 2),
-                                              child: Container(
-                                                padding: const EdgeInsets.all(
-                                                    1.0), // Padding untuk lingkaran
-                                                decoration: BoxDecoration(
-                                                  color: Colors
-                                                      .green, // Warna lingkaran
-                                                  shape: BoxShape
-                                                      .circle, // Bentuk lingkaran
-                                                ),
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color: Colors
-                                                      .white, // Warna ikon
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  width: 150,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            'assets/Burger.jpg',
-                                            width: 130,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text("Burger King Medium"),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              child: const Text("Rp.50.000"),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 2),
-                                              child: Container(
-                                                padding: const EdgeInsets.all(
-                                                    1.0), // Padding untuk lingkaran
-                                                decoration: BoxDecoration(
-                                                  color: Colors
-                                                      .green, // Warna lingkaran
-                                                  shape: BoxShape
-                                                      .circle, // Bentuk lingkaran
-                                                ),
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color: Colors
-                                                      .white, // Warna ikon
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 150,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            'assets/Burger.jpg',
-                                            width: 130,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text("Burger King Medium"),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              child: const Text("Rp.50.000"),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 2),
-                                              child: Container(
-                                                padding: const EdgeInsets.all(
-                                                    0.5), // Padding untuk lingkaran
-                                                decoration: BoxDecoration(
-                                                  color: Colors
-                                                      .green, // Warna lingkaran
-                                                  shape: BoxShape
-                                                      .circle, // Bentuk lingkaran
-                                                ),
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color: Colors
-                                                      .white, // Warna ikon
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+              child: FutureBuilder<List<Map<String, dynamic>>>(
+                future: fetchFood(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  final foodList = snapshot.data ?? [];
+
+                  // Menggunakan LayoutBuilder untuk responsif di berbagai ukuran layar
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      // Menentukan jumlah card per baris berdasarkan lebar layar
+                      int crossAxisCount = 2; // Default 2 kolom
+                      if (constraints.maxWidth > 1200) {
+                        crossAxisCount =
+                            4; // Untuk layar lebar (laptop atau desktop)
+                      } else if (constraints.maxWidth > 600) {
+                        crossAxisCount = 3; // Untuk tablet atau layar sedang
+                      }
+
+                      return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount:
+                              crossAxisCount, // Menyesuaikan jumlah kolom
+                          crossAxisSpacing: 10, // Spacing antar card
+                          mainAxisSpacing:
+                              10, // Spacing antar card secara vertikal
+                          childAspectRatio: 0.75, // Menyesuaikan proporsi card
+                        ),
+                        itemCount: foodList.length,
+                        itemBuilder: (context, index) {
+                          final food = foodList[index];
+                          return Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2),
                                 ),
                               ],
                             ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: 150,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            'assets/Burger.jpg',
-                                            width: 130,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text("Burger King Medium"),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              child: const Text("Rp.50.000"),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 2),
-                                              child: Container(
-                                                padding: const EdgeInsets.all(
-                                                    1.0), // Padding untuk lingkaran
-                                                decoration: BoxDecoration(
-                                                  color: Colors
-                                                      .green, // Warna lingkaran
-                                                  shape: BoxShape
-                                                      .circle, // Bentuk lingkaran
-                                                ),
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color: Colors
-                                                      .white, // Warna ikon
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                // Gambar makanan
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    'assets/Burger.jpg', // Ganti dengan URL atau asset gambar yang sesuai
+                                    width: double
+                                        .infinity, // Ukuran gambar mengikuti lebar card
+                                    height: 120,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                Container(
-                                  width: 150,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            'assets/Burger.jpg',
-                                            width: 130,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text("Burger King Medium"),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              child: const Text("Rp.50.000"),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 2),
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(0.2),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.green,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color: Colors.white,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                const SizedBox(
+                                    height:
+                                        10), // Jarak antara gambar dan teks nama
+                                // Deskripsi makanan
+                                Text(
+                                  food['name'] ?? 'No Name',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                                const SizedBox(
+                                    height:
+                                        5), // Jarak antara nama makanan dan harga
+                                // Menampilkan harga dan ikon "+" di sebelah kanan harga
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Price: Rp.${food['price'] ?? 0}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: const Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                    height: 5), // Jarak kecil di bawah Row
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],

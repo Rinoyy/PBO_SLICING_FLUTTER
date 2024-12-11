@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: Center(
         child: Image.asset(
-          'assets/Burger.jpg', // Ganti dengan gambar splash kamu
+          'assets/Burger.jpg',
           width: 200,
           height: 200,
         ),
