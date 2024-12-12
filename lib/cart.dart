@@ -1,249 +1,106 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:startin/main.dart';
-import 'home.dart';
 
-class cart extends StatelessWidget {
-  const cart({super.key});
+class cart extends StatefulWidget {
+  const cart({Key? key}) : super(key: key);
+
+  @override
+  State<cart> createState() => _CartState();
+}
+
+class _CartState extends State<cart> {
+  List<int> _quantities = [1, 1]; // Daftar kuantitas untuk setiap item
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [ 
-            GestureDetector(
-             onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => MainApp()),
-                  );
-                },
-
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                 boxShadow: [
-                  BoxShadow(
-                      color: Colors.white.withOpacity(0.1), blurRadius: 4),
-                ],
-              ),
-                child: const Icon(
-                  Icons.chevron_left,
-                  size: 40,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const Text(
-              "Cart",
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-            const Icon(
-              Icons.account_circle,
-              size: 40,
-            ),
-          ],
-        ),
+        title: const Text("Cart"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            "assets/Burger.jpg",
-                            width: 120,
+              child: ListView.builder(
+                itemCount: _quantities.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              "assets/Burger.jpg",
+                              width: 120,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                            const  Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Burger King Medium",
-                                    style: TextStyle(
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "Burger King Medium",
+                                      style: TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Icon(Icons.delete, color: Colors.red),
-                                ],
-                              ),
-                            const  SizedBox(height: 8),
-                              Text(
-                                "Rp. 500000",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            const  SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IconButton( icon: Icon(Icons.remove),
-                                    onPressed: () {
-                                      // Decrease quantity logic here
-                                    },
-                                  ),
-                                  const Text(
-                                    "1", // Replace with the dynamic quantity
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.add),
-                                    onPressed: () {
-                                      // Increase quantity logic here
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Icon(Icons.delete, color: Colors.red),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  "Rp. 500000",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.remove),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (_quantities[index] > 1) {
+                                            _quantities[index]--;
+                                          }
+                                        });
+                                      },
+                                    ),
+                                    Text(
+                                      '${_quantities[index]}',
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        setState(() {
+                                          _quantities[index]++;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                 Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            "assets/Burger.jpg",
-                            width: 120,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                            const  Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Burger King Medium",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Icon(Icons.delete, color: Colors.red),
-                                ],
-                              ),
-                            const  SizedBox(height: 8),
-                              Text(
-                                "Rp. 500000",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            const  SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IconButton( icon: Icon(Icons.remove),
-                                    onPressed: () {
-                                      // Decrease quantity logic here
-                                    },
-                                  ),
-                                  const Text(
-                                    "1", // Replace with the dynamic quantity
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.add),
-                                    onPressed: () {
-                                      // Increase quantity logic here
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                  Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            "assets/Burger.jpg",
-                            width: 120,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                            const  Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Burger King Medium",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Icon(Icons.delete, color: Colors.red),
-                                ],
-                              ),
-                            const  SizedBox(height: 8),
-                              Text(
-                                "Rp. 500000",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            const  SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IconButton( icon: Icon(Icons.remove),
-                                    onPressed: () {
-                                      // Decrease quantity logic here
-                                    },
-                                  ),
-                                  const Text(
-                                    "1", // Replace with the dynamic quantity
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.add),
-                                    onPressed: () {
-                                      // Increase quantity logic here
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
               ),
             ),
             Container(
-              // height: 200,
-              padding: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20),
               child: Column(
                 children: [
                   const Row(
@@ -255,65 +112,43 @@ class cart extends StatelessWidget {
                       )
                     ],
                   ),
-                 Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text("PPN 11%"),
-                        ),
-                        Container(
-                          child: Text("Rp 10.000,00"),
-                        )
-                      ],
-                    ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text("PPN 11%"),
+                      Text("Rp 10.000,00"),
+                    ],
                   ),
                   Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: const Text("Total belanja"),
-                        ),
-                        Container(
-                          child: const Text("Rp 94.000,00"),
-                        )
-                      ],
-                    ),
                     decoration: const BoxDecoration(
-                        border: Border(
-                            bottom:
-                                BorderSide(color: Colors.black, width: 2.0))),
-                  ),
-                  Container(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.black, width: 2.0),
+                      ),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: const Text(
-                            "Total belanja",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Container(
-                          child: const Text("Rp 94.000,00"),
-                        )
+                      children: const [
+                        Text("Total belanja"),
+                        Text("Rp 94.000,00"),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Container(
                     width: 250,
+                    margin: const EdgeInsets.only(top: 20),
                     child: ElevatedButton(
                       onPressed: () {
-                        print('halo');
+                        print('Halo');
                       },
-                      child: const Text("kirim"),
+                      child: const Text("Kirim"),
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
                         backgroundColor: Colors.blue,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
