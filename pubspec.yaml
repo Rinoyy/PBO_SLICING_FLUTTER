@@ -29,7 +29,7 @@ flutter:
     - assets/Burger.jpg
 
 flutter_native_splash:
-  color: "#ffffff" # Warna background splash screen
+  color: "#ffffff" # Warna background splash screen 
   image: assets/Burger.jpg # Path gambar splash screen
   android: true
   ios: true
